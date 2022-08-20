@@ -5,6 +5,7 @@ import numpy as np
 from pydub import AudioSegment
 import os
 
+#importing the models which are saved as .sav file. 
 model, encoding = model_loader("Saved_model.sav", "Encodings.sav")
 
 st.sidebar.markdown(
@@ -229,26 +230,26 @@ if check:
                 st.pyplot(fig)
 
 else:
-    radio = st.sidebar.radio("Select format of audio file", options=['mp3', 'wav'])
+    radio = st.sidebar.radio("Select format of audio file", options=['mp3', 'wav']) # Radio to select an audio file type- mp3 or wav
 
     if radio == 'wav':
 
-        file = st.sidebar.file_uploader("Upload Audio To Classify", type=["wav"])
+        file = st.sidebar.file_uploader("Upload Audio To Classify", type=["wav"]) #Allows to load a wav file
 
         if file is not None:
             st.markdown(
                 """<h1 style='color:yellow;'>Audio : </h1>""",
                 unsafe_allow_html=True)
-            st.audio(file)
+            st.audio(file) # To get an audio player in the webpage
 
-            rad = st.sidebar.radio("Choose Options", options=["Predict", "Spectrogram"])
+            rad = st.sidebar.radio("Choose Options", options=["Predict", "Spectrogram"])   #Selecr feature Predict or spectogram
 
             # rad = st.sidebar.checkbox(label="Do You want to see the spectrogram ?")
             if rad == "Predict":
                 if st.button("Classify Audio"):
-                    uploaded_audio = audio_process(file)
+                    uploaded_audio = audio_process(file) # Sends the audio file for audio processing with librosa
 
-                    predictions = model.predict(uploaded_audio)
+                    predictions = model.predict(uploaded_audio)  #Checking audio genre with the model
 
                     targets = encoding.inverse_transform(np.array(predictions).reshape(1, -1))
                     #
